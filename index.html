@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SalesPredict AI | Sales Prediction System</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SheetJS - Excel Reader -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Animated Background -->
+    <div class="background">
+        <div class="orb orb-one"></div>
+        <div class="orb orb-two"></div>
+        <div class="orb orb-three"></div>
+
+        <div class="grid-background"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <header class="navbar glass">
+
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+                <h2>SalesPredict<span>AI</span></h2>
+                <small>Smart Sales Intelligence</small>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#upload">Data</a>
+            <a href="#analytics">Analytics</a>
+            <a href="#forecast">Forecast</a>
+        </nav>
+
+        <button class="nav-btn" onclick="scrollToUpload()">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            Upload Data
+        </button>
+
+    </header>
+
+
+    <!-- HERO -->
+    <section class="hero" id="dashboard">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                <span class="pulse"></span>
+                AI POWERED SALES FORECASTING
+            </div>
+
+            <h1>
+                Predict Tomorrow's
+                <span>Sales Today.</span>
+            </h1>
+
+            <p>
+                Upload your historical sales data and transform it into
+                powerful predictions, analytics and business insights.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button class="primary-btn" onclick="scrollToUpload()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Start Prediction
+                </button>
+
+                <button class="secondary-btn" onclick="scrollToAnalytics()">
+                    <i class="fa-solid fa-chart-column"></i>
+                    View Analytics
+                </button>
+
+            </div>
+
+            <div class="trust-row">
+
+                <div>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Secure Data
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-bolt"></i>
+                    Fast Analysis
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-brain"></i>
+                    AI Insights
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO VISUAL -->
+        <div class="hero-visual">
+
+            <div class="floating-card revenue-card glass">
+
+                <div class="mini-icon">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+
+                <div>
+                    <small>Predicted Revenue</small>
+                    <h3 id="heroPrediction">₹5.24L</h3>
+                </div>
+
+                <span class="growth">
+                    +18.4%
+                </span>
+
+            </div>
+
+
+            <div class="dashboard-preview glass">
+
+                <div class="preview-top">
+
+                    <div>
+                        <small>Sales Performance</small>
+                        <h3>₹24.8L</h3>
+                    </div>
+
+                    <span class="live">
+                        <span></span> LIVE
+                    </span>
+
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="heroChart"></canvas>
+                </div>
+
+                <div class="preview-bottom">
+
+                    <div>
+                        <span class="dot green"></span>
+                        Actual Sales
+                    </div>
+
+                    <div>
+                        <span class="dot blue"></span>
+                        AI Forecast
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="floating-card ai-card glass">
+
+                <div class="ai-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+
+                <div>
+                    <small>AI Model</small>
+                    <strong>Prediction Ready</strong>
+                </div>
+
+                <i class="fa-solid fa-circle-check check"></i>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATS -->
+    <section class="stats-section">
+
+        <div class="stat-card glass">
+            <div class="stat-icon green-icon">
+                <i class="fa-solid fa-money-bill-trend-up"></i>
+            </div>
+
+            <div>
+                <span>Total Revenue</span>
+                <h2 id="totalRevenue">₹24.8L</h2>
+                <small class="positive">↑ 14.8% this month</small>
+            </div>
+        </div>
+
+
+        <div class="stat-card glass">
+            <div class="stat-icon blue-icon">
+                <i class="fa-solid fa-chart-simple"></i>
+            </div>
+
+            <div>
+                <span>Average Sales</span>
+                <h2 id="averageSales">₹4.13L</h2>
+                <small class="positive">↑ 8.2% growth</small>
+            </div>
+        </div>
+
+
+        <div class="stat-card glass">
+            <div class="stat-icon orange-icon">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+
+            <div>
+                <span>AI Prediction</span>
+                <h2 id="predictionValue">₹5.24L</h2>
+                <small class="positive">↑ 18.4% expected</small>
+            </div>
+        </div>
+
+
+        <div class="stat-card glass">
+            <div class="stat-icon red-icon">
+                <i class="fa-solid fa-database"></i>
+            </div>
+
+            <div>
+                <span>Data Records</span>
+                <h2 id="recordCount">1,248</h2>
+                <small>Historical records</small>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- DATA UPLOAD -->
+    <section class="section" id="upload">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="section-label">01 — DATA INPUT</span>
+
+                <h2>
+                    Upload Your
+                    <span>Sales Data</span>
+                </h2>
+
+                <p>
+                    Upload CSV or Excel files containing your historical
+                    sales information.
+                </p>
+            </div>
+
+            <div class="file-types">
+                <span>CSV</span>
+                <span>XLSX</span>
+                <span>XLS</span>
+            </div>
+
+        </div>
+
+
+        <div class="upload-layout">
+
+            <div class="upload-box glass" id="dropZone">
+
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept=".csv,.xlsx,.xls"
+                    hidden
+                >
+
+                <div class="upload-icon">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+
+                <h3>Drop your dataset here</h3>
+
+                <p>
+                    or click to browse your computer
+                </p>
+
+                <button
+                    class="upload-btn"
+                    onclick="document.getElementById('fileInput').click()"
+                >
+                    <i class="fa-solid fa-folder-open"></i>
+                    Choose File
+                </button>
+
+                <small>
+                    Maximum recommended file size: 20MB
+                </small>
+
+            </div>
+
+
+            <div class="dataset-card glass">
+
+                <div class="dataset-header">
+
+                    <div>
+                        <span class="section-label">DATASET</span>
+                        <h3>Selected File</h3>
+                    </div>
+
+                    <div class="status-badge">
+                        <span></span>
+                        Ready
+                    </div>
+
+                </div>
+
+
+                <div id="fileInfo" class="file-info empty">
+
+                    <i class="fa-solid fa-file-excel"></i>
+
+                    <div>
+                        <strong>No file selected</strong>
+                        <span>Upload CSV or Excel file</span>
+                    </div>
+
+                </div>
+
+
+                <div class="dataset-actions">
+
+                    <button
+                        class="analyze-btn"
+                        id="analyzeBtn"
+                        onclick="analyzeData()"
+                        disabled
+                    >
+                        <i class="fa-solid fa-microchip"></i>
+                        Analyze Dataset
+                    </button>
+
+                    <button
+                        class="remove-btn"
+                        id="removeBtn"
+                        onclick="removeFile()"
+                    >
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Data Preview -->
+        <div class="data-preview glass" id="previewSection">
+
+            <div class="preview-heading">
+
+                <div>
+                    <span class="section-label">DATA PREVIEW</span>
+                    <h3>Uploaded Records</h3>
+                </div>
+
+                <span id="previewStatus">
+                    Waiting for dataset...
+                </span>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table id="dataTable">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Revenue</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td colspan="4">
+                                Upload a file to preview your data
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ANALYTICS -->
+    <section class="section" id="analytics">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">02 — ANALYTICS</span>
+
+                <h2>
+                    Understand Your
+                    <span>Sales Trends</span>
+                </h2>
+
+                <p>
+                    Visualize historical performance and identify important
+                    sales patterns.
+                </p>
+
+            </div>
+
+
+            <select id="periodSelect" class="glass-select">
+
+                <option value="6">Last 6 Months</option>
+                <option value="12">Last 12 Months</option>
+                <option value="24">Last 24 Months</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="analytics-grid">
+
+            <div class="chart-card glass">
+
+                <div class="chart-header">
+
+                    <div>
+                        <span>REVENUE ANALYSIS</span>
+                        <h3>Sales Performance</h3>
+                    </div>
+
+                    <div class="trend-up">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        +18.4%
+                    </div>
+
+                </div>
+
+                <div class="big-chart">
+                    <canvas id="salesChart"></canvas>
+                </div>
+
+            </div>
+
+
+            <div class="insight-card glass">
+
+                <div class="insight-top">
+
+                    <div class="insight-ai">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+
+                    <span>AI INSIGHT</span>
+
+                </div>
+
+                <h3>
+                    Sales momentum is
+                    <span>increasing.</span>
+                </h3>
+
+                <p>
+                    Your recent sales data indicates a consistent upward
+                    trend. The model detects stronger performance in the
+                    latest periods.
+                </p>
+
+
+                <div class="insight-stat">
+
+                    <div>
+                        <span>Growth Trend</span>
+                        <strong>+18.4%</strong>
+                    </div>
+
+                    <div>
+                        <span>Trend Direction</span>
+                        <strong>↗ Upward</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FORECAST -->
+    <section class="section forecast-section" id="forecast">
+
+        <div class="forecast-header">
+
+            <span class="section-label">03 — AI FORECAST</span>
+
+            <h2>
+                Your Next Sales
+                <span>Prediction</span>
+            </h2>
+
+            <p>
+                Generate a forecast based on your uploaded historical data.
+            </p>
+
+        </div>
+
+
+        <div class="forecast-grid">
+
+
+            <div class="forecast-main glass">
+
+                <div class="forecast-icon">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+
+                <span>EXPECTED NEXT PERIOD SALES</span>
+
+                <h2 id="forecastAmount">
+                    ₹5,24,000
+                </h2>
+
+                <div class="forecast-growth">
+                    <i class="fa-solid fa-arrow-up"></i>
+                    18.4% compared to previous period
+                </div>
+
+
+                <button
+                    class="generate-btn"
+                    onclick="runPrediction()"
+                >
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Generate AI Prediction
+                </button>
+
+            </div>
+
+
+            <div class="confidence-card glass">
+
+                <span>MODEL PERFORMANCE</span>
+
+                <div class="confidence-ring">
+
+                    <svg viewBox="0 0 120 120">
+
+                        <circle
+                            class="ring-bg"
+                            cx="60"
+                            cy="60"
+                            r="50"
+                        />
+
+                        <circle
+                            class="ring-progress"
+                            cx="60"
+                            cy="60"
+                            r="50"
+                        />
+
+                    </svg>
+
+                    <div class="ring-value">
+                        <strong id="modelScore">87%</strong>
+                        <small>Score</small>
+                    </div>
+
+                </div>
+
+                <h3>Prediction Quality</h3>
+
+                <p>
+                    Model performance based on historical validation data.
+                </p>
+
+            </div>
+
+
+            <div class="smart-card glass">
+
+                <div class="smart-heading">
+
+                    <div class="smart-icon">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+
+                    <div>
+                        <span>SMART INSIGHTS</span>
+                        <h3>AI Recommendations</h3>
+                    </div>
+
+                </div>
+
+
+                <div class="recommendation">
+
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+
+                    <p>
+                        Consider increasing inventory for your
+                        high-performing products.
+                    </p>
+
+                </div>
+
+
+                <div class="recommendation">
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                    <p>
+                        Recent data suggests stronger demand in upcoming
+                        periods.
+                    </p>
+
+                </div>
+
+
+                <div class="recommendation">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <p>
+                        Continue monitoring the upward sales trend.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- VISUAL / VIDEO SECTION -->
+    <section class="section visual-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">04 — BUSINESS INTELLIGENCE</span>
+
+                <h2>
+                    From Data To
+                    <span>Decision</span>
+                </h2>
+
+                <p>
+                    Convert raw sales data into actionable business intelligence.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="visual-grid">
+
+            <!-- IMAGE -->
+            <div class="visual-card image-card glass">
+
+                <img
+                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80"
+                    alt="Sales Analytics Dashboard"
+                >
+
+                <div class="visual-overlay">
+
+                    <span>DATA ANALYTICS</span>
+
+                    <h3>
+                        See the story behind your numbers.
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <!-- VIDEO -->
+            <div class="visual-card video-card glass">
+
+                <video
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    poster="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80"
+                >
+
+                    <source
+                        src="https://cdn.coverr.co/videos/coverr-a-man-working-on-a-laptop-1574/1080p.mp4"
+                        type="video/mp4"
+                    >
+
+                </video>
+
+                <div class="visual-overlay">
+
+                    <span>SMART BUSINESS</span>
+
+                    <h3>
+                        Make faster decisions with predictive insights.
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section class="how-section section">
+
+        <div class="forecast-header">
+
+            <span class="section-label">05 — WORKFLOW</span>
+
+            <h2>
+                How SalesPredict
+                <span>Works</span>
+            </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step glass">
+
+                <div class="step-number">01</div>
+
+                <i class="fa-solid fa-file-arrow-up"></i>
+
+                <h3>Upload Data</h3>
+
+                <p>
+                    Upload your historical CSV or Excel sales dataset.
+                </p>
+
+            </div>
+
+
+            <div class="step-line"></div>
+
+
+            <div class="step glass">
+
+                <div class="step-number">02</div>
+
+                <i class="fa-solid fa-microchip"></i>
+
+                <h3>AI Analysis</h3>
+
+                <p>
+                    The system analyzes sales patterns and historical trends.
+                </p>
+
+            </div>
+
+
+            <div class="step-line"></div>
+
+
+            <div class="step glass">
+
+                <div class="step-number">03</div>
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <h3>Prediction</h3>
+
+                <p>
+                    Generate a future sales forecast from the analyzed data.
+                </p>
+
+            </div>
+
+
+            <div class="step-line"></div>
+
+
+            <div class="step glass">
+
+                <div class="step-number">04</div>
+
+                <i class="fa-solid fa-lightbulb"></i>
+
+                <h3>Insights</h3>
+
+                <p>
+                    Use intelligent insights to support business decisions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div class="footer-content">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <div>
+                    <h2>SalesPredict<span>AI</span></h2>
+                    <small>Smart Sales Intelligence</small>
+                </div>
+
+            </div>
+
+
+            <p>
+                Turning historical sales data into intelligent predictions.
+            </p>
+
+
+            <div class="footer-links">
+
+                <a href="#dashboard">Dashboard</a>
+                <a href="#upload">Upload</a>
+                <a href="#analytics">Analytics</a>
+                <a href="#forecast">Forecast</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 SalesPredict AI
+            </span>
+
+            <span>
+                Built for Hackathon 🚀
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
